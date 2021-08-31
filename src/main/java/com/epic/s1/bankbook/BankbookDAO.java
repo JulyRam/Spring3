@@ -18,7 +18,7 @@ public class BankbookDAO {
 	}
 	
 	//setInsert
-	public int setInsert(BankBookDTO bankBookDTO) {
+	public int setInsert(BankbookDTO bankBookDTO) {
 		Connection con = dbConnector.getConnect();
 		PreparedStatement st= null;
 		int result=0;

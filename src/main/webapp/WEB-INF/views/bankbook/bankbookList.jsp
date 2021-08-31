@@ -10,6 +10,23 @@
 <body>
 	<c:import url="../temp/boot_nav.jsp"></c:import>
 
-	<h1>Bankbook List page</h1>
+	<h1>List Renewal</h1>
+	
+	<div class="container-fluid">
+	<div class="col-md-8 mx-auto my-0">
+		<table class="table table-dark table-striped">
+			<tr>
+				<th>Number</th><th>Name</th><th>Rate</th>
+			</tr>
+			<c:forEach items="${list}" var="dto"></c:forEach>
+			<tr>
+				<<th>${dio.bookNumber}</th>
+				<<th>${dio.bookName}</th>
+				<<th>${dio.bookRate}</th>
+			</tr>
+		</table>
+	</div>
+	
+	</div>
 </body>
 </html>
