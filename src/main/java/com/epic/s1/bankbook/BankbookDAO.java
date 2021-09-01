@@ -7,19 +7,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.epic.s1.util.DBConnector;
+import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class BankbookDAO {
-	
-	private DBConnector dbConnector;
-	
-	public BankbookDAO() {
-		dbConnector = new DBConnector();
-	}
+	@Autowired
+	private DataSource dataSource;
 	
 	//setInsert
-	public int setInsert(BankBookDTO bankBookDTO) {
-		Connection con = dbConnector.getConnect();
+	public int setInsert(BankbookDTO bankbookDTO) {
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		PreparedStatement st= null;
 		int result=0;
 		String sql ="insert into bankbook (bookNumber, bookName, bookRate, bookSale) "
@@ -27,17 +33,15 @@ public class BankbookDAO {
 		
 		try {
 			st = con.prepareStatement(sql);
-			st.setString(1, bankBookDTO.getBookName());
-			st.setDouble(2, bankBookDTO.getBookRate());
-			st.setInt(3, bankBookDTO.getBookSale());
+			st.setString(1, bankbookDTO.getBookName());
+			st.setDouble(2, bankbookDTO.getBookRate());
+			st.setInt(3, bankbookDTO.getBookSale());
 			
 			result = st.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			dbConnector.disConnect(st, con);
-		}
+		} 
 		
 		return result;
 		
@@ -47,7 +51,13 @@ public class BankbookDAO {
 	
 	//getList
 	public ArrayList<BankbookDTO> getList() {
-		Connection con = dbConnector.getConnect();
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		ArrayList<BankbookDTO> ar = new ArrayList<BankbookDTO>();
@@ -71,8 +81,6 @@ public class BankbookDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			dbConnector.disConnect(rs, st, con);
 		}
 		
 		return ar;
@@ -81,7 +89,13 @@ public class BankbookDAO {
 	
 	public BankbookDTO getSelect(BankbookDTO bankBookDTO) {
 		
-		Connection con = dbConnector.getConnect();
+		Connection con = null;
+		try {
+			con = dataSource.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("Con : "+con);
 		PreparedStatement st=null;
 		ResultSet rs = null;
@@ -106,10 +120,7 @@ public class BankbookDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			dbConnector.disConnect(rs, st, con);
-		}
-		
+		} 
 		return result;
 		
 	}
