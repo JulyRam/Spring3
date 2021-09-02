@@ -9,18 +9,23 @@ import org.springframework.stereotype.Service;
 public class BankbookService {
 	
 	@Autowired
-	private BankbookDAO bankBookDAO;
+	private BankbookDAO bankbookDAO;
+	
+	public int setDelete(Long bookNumber) {
+		return bankbookDAO.setDelete(bookNumber);
+	}
 	
 	public int setInsert(BankbookDTO bankBookDTO) {
-		return bankBookDAO.setInsert(bankBookDTO);
+		return bankbookDAO.setInsert(bankBookDTO);
 	}
 	
 	public List<BankbookDTO> getList(){
-		return bankBookDAO.getList();
+		return bankbookDAO.getList();
 	}
 	
-	public BankbookDTO getSelect(BankbookDTO bankBookDTO) {
-		return bankBookDAO.getSelect(bankBookDTO);
+	public BankbookDTO getSelect(BankbookDTO bankbookDTO) {
+		System.out.println("Service : "+bankbookDTO.getBookNumber());
+		return bankbookDAO.getSelect(bankbookDTO);
 	}
 
 }

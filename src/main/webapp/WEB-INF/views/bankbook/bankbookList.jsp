@@ -13,21 +13,25 @@
 	<h1>Bankbook List page</h1>
 	
 	<div class="container-fluid">
-		<div class="col-md-7 my-2 mx-auto">
-			<table class="table table-striped">
-				<tr>
-					<th>Number</th><th>Name</th><th>Rate</th>
-				</tr>
-				<c:forEach items="${list}" var="dto">
-				<tr>
-					<td>${dto.bookNumber}</td>
-					<td><a href="./bankbookSelect?bookNumber=${dto.bookNumber}">${dto.bookName}</a></td>
-					<td>${dto.bookRate}</td>
-				</tr>
-				
-				</c:forEach>
-			</table>
-		</div>
+	<div class="col-md-7 my-2 mx-auto">
+		<table class="table table-hover">
+			<tr>
+				<th>Number</th><th>Name</th><th>Rate</th>
+			</tr>
+			<c:forEach items="${list}" var="dto">
+			<tr>
+				<td>${dto.bookNumber}</td>
+				<td><a href="./bankbookSelect?bookNumber=${dto.bookNumber}">${dto.bookName}</a></td>
+				<td>${dto.bookRate}</td>
+			</tr>
+			
+			</c:forEach>
+			
+			
+		</table>
+		<a href="./bankbookInsert" class="btn btn-danger">ADD</a>
 	</div>
+</div>
+	
 </body>
 </html>

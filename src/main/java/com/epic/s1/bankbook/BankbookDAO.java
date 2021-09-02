@@ -12,8 +12,12 @@ public class BankbookDAO {
 	private SqlSession sqlSession;
 	private final String NAMESPACE="com.epic.s1.bankbook.BankbookDAO.";
 	
-	public int setInsert(BankbookDTO bankbookDTO) {
-		return sqlSession.insert(NAMESPACE+"setInsert", bankbookDTO);
+	public int setDelete(Long bookNumber) {
+		return sqlSession.delete(NAMESPACE+"setDelete", bookNumber);
+	}
+	
+	public int setInsert(BankbookDTO bankBookDTO) {
+		return sqlSession.insert(NAMESPACE+"setInsert", bankBookDTO);
 	}
 	
 	public List<BankbookDTO> getList(){
@@ -21,6 +25,7 @@ public class BankbookDAO {
 	}
 	
 	public BankbookDTO getSelect(BankbookDTO bankBookDTO) {
+		System.out.println("DAO : "+bankBookDTO.getBookNumber());
 		return sqlSession.selectOne(NAMESPACE+"getSelect", bankBookDTO);
 	}
 	

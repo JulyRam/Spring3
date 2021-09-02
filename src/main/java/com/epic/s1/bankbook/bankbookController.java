@@ -17,13 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class BankbookController {
 	
 	@Autowired
-	private BankbookService bankBookService;
+	private BankbookService bankbookService;
 	
 	
 	@RequestMapping("bankbookList")
 	public ModelAndView list(ModelAndView mv) {
 		
-		List<BankbookDTO> ar = bankBookService.getList();
+		List<BankbookDTO> ar = bankbookService.getList();
 		
 		mv.addObject("list", ar);
 		mv.setViewName("bankbook/bankbookList");
@@ -32,17 +32,35 @@ public class BankbookController {
 	}
 	
 	@RequestMapping("bankbookSelect")
-	public void select(BankbookDTO bankBookDTO, Model model) {
-		bankBookDTO = bankBookService.getSelect(bankBookDTO);
-		model.addAttribute("dtov", bankBookDTO);
+	public void select(HttpServletRequest request, BankbookDTO bankbookDTO, Model model) {
+//		String bn = request.getParameter("bookNumber");
+//		long l = Long.parseLong(bn);
+//		BankBookDTO banDto = new BankBookDTO();
+//		banDto.setBookNumber(l);
+		System.out.println("select");
+		System.out.println(bankbookDTO.getBookNumber());
+		
+		bankbookDTO = bankbookService.getSelect(bankbookDTO);
+		System.out.println("Name : "+bankbookDTO.getBookName());
+		model.addAttribute("dto", bankbookDTO);
 	}
 	
-	@RequestMapping("bankbookInsert.do")
-	public String insert(BankbookDTO bankBookDTO) {
-		System.out.println(bankBookDTO.getBookName());
-		System.out.println("insert");
-		return "redirect:../";
+	@RequestMapping(value="bankbookInsert", method = RequestMethod.GET)
+	public void insert() {}
+	
+	@RequestMapping(value="bankbookInsert", method = RequestMethod.POST)
+	public String insert(BankbookDTO bankbookDTO) {
+		int result = bankbookService.setInsert(bankbookDTO);
+		
+		return "redirect:./bankbookList";
+		
 	}
 	
+	@RequestMapping("bankbookDelete")
+	public String delete(Long bookNumber) {
+		int result = bankbookService.setDelete(bookNumber);
+		
+		return "redirect:./bankbookList";
+	}
 
 }

@@ -9,6 +9,15 @@
 <c:import url="../temp/boot_head.jsp"></c:import>
 </head>
 <body>
-	<c:import url="../temp/book_nav.jsp"></c:import>
+	<c:import url="../temp/boot_nav.jsp"></c:import>
+	
+	<div class="container-fluid">
+		<h3>BookNumber : ${dto.bookNumber}</h3>
+		<h3>BookName : ${dto.bookName}</h3>
+		<h3>BookRate : ${dto.bookRate}</h3>
+		<h3>BookSale : ${dto.bookSale}</h3>
+		
+		<a href="./bankbookDelete?bookNumber=${dto.bookNumber}">Delete</a>
+	</div>
 </body>
 </html>
