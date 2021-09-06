@@ -6,20 +6,74 @@
   
   <mapper namespace="com.epic.s1.bankbook.BankbookDAO">
   
-  	<insert id="setInsert" parameterType="com.epic.s1.bankbook.BankbookDTO">
-  		insert into bankbook (bookNumber, bookName, bookRate, bookSale)
-  		values (bankbook_seq.nextval, #{bookName}, #{bookRate}, #{bookSale})
-  	</insert>
-  	
-  	
-  	
-  	<select id="getList" resultType="com.epic.s1.bankbook.BankbookDTO">
-  		SELECT * FROM BANKBOOK
+  	<select id="getCount" resultType="java.lang.Long" parameterType="com.epic.s1.util.Pager">
+  		select count(booknumber) from bankbook
+  		WHERE 
+         		 
+         		 <choose>
+         		 	<when test="kind == 'num'">
+         		 		bookNumber
+         		 	</when>
+         		 	
+         		 	<when test="kind == 'name'">
+         		 		bookName
+         		 	</when>
+         		 	
+         		 	<otherwise>
+         		 		bookRate
+         		 	</otherwise>
+         		 
+         		 </choose>
+         		 
+         		 
+         		 LIKE '%' || #{search} || '%'
+  		
+  	</select>
+  
+  
+  	<select id="getList" resultType="com.epic.s1.bankbook.BankbookDTO" parameterType="com.epic.s1.util.Pager" >
+  		SELECT * FROM
+    		(SELECT rownum R, BK.* FROM
+        		(SELECT * 
+         		 FROM BANKBOOK 
+         		 WHERE 
+         		 
+         		 <choose>
+         		 	<when test="kind == 'num'">
+         		 		bookNumber
+         		 	</when>
+         		 	
+         		 	<when test="kind == 'name'">
+         		 		bookName
+         		 	</when>
+         		 	
+         		 	<otherwise>
+         		 		bookRate
+         		 	</otherwise>
+         		 
+         		 </choose>
+         		 
+         		 
+         		 LIKE '%' || #{search} || '%'
+         		 ORDER BY BOOKNUMBER desc
+         		)
+       		 BK
+    		)
+		WHERE R between #{startRow} and #{lastRow}
   	</select>
   	
   	<select id="getSelect" parameterType="com.epic.s1.bankbook.BankbookDTO" resultType="com.epic.s1.bankbook.BankbookDTO">
   		SELECT * FROM BANKBOOK WHERE BOOKNUMBER=#{bookNumber}
   	</select>
+  	
+  	<insert id="setInsert" parameterType="com.epic.s1.bankbook.BankbookDTO">
+  		insert into BANKBOOK (bookNumber, bookName, bookRate, bookSale)
+  		values (NUM_SEQ.nextval, #{bookName}, #{bookRate}, #{bookSale})
+  	</insert>
 
+	<insert id="setUpdate" parameterType="com.epic.s1.bankbook.BankbookDTO">
+		update bankbook set bookName=#{bookName}, bookRate=#{bookRate}, bookSale=#{bookSale}
+		where bookNumber=#{bookNumber}
+	</insert>
   
   </mapper>

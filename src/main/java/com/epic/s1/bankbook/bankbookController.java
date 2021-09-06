@@ -1,5 +1,6 @@
 package com.epic.s1.bankbook;
 
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.epic.s1.util.Pager;
 
 @Controller
 @RequestMapping("/bankbook/*")
@@ -21,10 +23,12 @@ public class BankbookController {
 	
 	
 	@RequestMapping("bankbookList")
-	public ModelAndView list(ModelAndView mv) {
+	public ModelAndView list(ModelAndView mv, Pager pager) {
 		
-		List<BankbookDTO> ar = bankbookService.getList();
 		
+		List<BankbookDTO> ar = bankbookService.getList(pager);
+		
+		mv.addObject("pager", pager);
 		mv.addObject("list", ar);
 		mv.setViewName("bankbook/bankbookList");
 		
@@ -33,10 +37,7 @@ public class BankbookController {
 	
 	@RequestMapping("bankbookSelect")
 	public void select(HttpServletRequest request, BankbookDTO bankbookDTO, Model model) {
-//		String bn = request.getParameter("bookNumber");
-//		long l = Long.parseLong(bn);
-//		BankBookDTO banDto = new BankBookDTO();
-//		banDto.setBookNumber(l);
+
 		System.out.println("select");
 		System.out.println(bankbookDTO.getBookNumber());
 		
@@ -62,5 +63,23 @@ public class BankbookController {
 		
 		return "redirect:./bankbookList";
 	}
+	
+	@RequestMapping(value = "bankbookUpdate", method = RequestMethod.GET)
+	public ModelAndView update(BankbookDTO bankbookDTO) {
+		bankbookDTO = bankbookService.getSelect(bankbookDTO);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("bankbook/bankbookUpdate");
+		mv.addObject("dto", bankbookDTO);
+		
+		return mv;
+	}
+	@RequestMapping(value = "bankbookUpdate", method = RequestMethod.POST)
+	public ModelAndView update(BankbookDTO bankbookDTO, ModelAndView mv) {
+		int result = bankbookService.setUpdate(bankbookDTO);
+		mv.setViewName("redirect:./bankbookList");
+		return mv;
+	}
+	
+	
 
 }
